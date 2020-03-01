@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/jquery-3.1.1.js}"></script>
+</head>
+<body>
+<center>
+    <form th:action="@{add_do}" th:method="post" id="form">
+        班级名称：<input th:name="classname"/><br>
+        开班日期：<input th:name="begintime"/><br>
+        毕业日期：<input th:name="endtime"/><br>
+        年级：<select th:name="gradeid">
+        <option th:each="g:${gs}" th:value="${g.gradeid}" th:text="${g.gradename}"></option>
+    </select><br><!-- -->
+        <input type="button" value="添加" onclick="asd()">
+    </form>
+</center>
+</body>
+<script>
+    function asd() {
+        alert("555");
+        document.getElementById('form').submit()
+    }
+</script>
+</html>

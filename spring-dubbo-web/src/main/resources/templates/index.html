@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/jquery-3.1.1.js}"></script>
+</head>
+<body>
+<script>
+    $(function () {
+        $("#checkall").click(function () {
+            if(this.checked){
+                $("input[name='ids']").prop("checked",true);
+            }else {
+                $("input[name='ids']").prop("checked",false);
+            }
+        });
+
+        $("#delall").click(function () {
+            var ids="";
+            $("input[name='ids']").each(function (i,obj) {
+                if(obj.checked){
+                    ids+=obj.value+",";
+                }
+            });
+            if(ids.length==0){
+                alert("请至少选择一个");
+            }else {
+                ids=ids.substring(0,ids.length-1);
+                $.post('../delall',{"ids":ids},function (data) {
+                    if(data == "success"){
+                        window.location.reload();
+                    }
+                })
+            }
+        })
+    })
+</script>
+<center>
+    <a th:href="@{/addclass}" th:text="添加"></a>
+    <a href="javascript:void(0);" th:text="选中删除" th:id="delall"></a>
+    <table border="1" cellspacing="0">
+        <tr>
+            <input th:type="checkbox" th:id="checkall" th:text="全选"/>
+            <td>班级编号</td>
+            <td>班级名称</td>
+            <td>开班日期</td>
+            <td>毕业日期</td>
+            <td>年级名称</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="c:${pageInfo.list}">
+            <td><input th:type="checkbox" th:name="ids" th:value="${c.classid}"/></td>
+            <td th:text="${c.classid}"></td>
+            <td th:text="${c.classname}"></td>
+            <td th:text="${#dates.format(c.begintime,'yyyy-MM-dd hh:mm:ss')}"></td>
+            <td th:text="${#dates.format(c.endtime,'yyyy-MM-dd hh:mm:ss')}"></td>
+            <td th:text="${c.gradename}"></td>
+            <td>
+                <a th:href="@{/updClass(classid=${c.classid})}" th:text="修改"></a>
+                <a th:href="@{/delClass(classid=${c.classid})}" th:text="删除"></a>
+            </td>
+        </tr>
+    </table>
+
+    <a th:href="@{/findall(currentPage=${pageInfo.firstPage})}" th:text="首页"></a>
+    <a th:href="@{/findall(currentPage=${pageInfo.pageNum-1})}" th:text="上一页"></a>
+    <a th:each="p:${pageInfo.getNavigatepageNums()}" th:href="@{/findall(currentPage=${p})}" th:text="${p}"></a>
+    <a th:href="@{/findall(currentPage=${pageInfo.pageNum+1})}" th:text="下一页"></a>
+    <a th:href="@{/findall(currentPage=${pageInfo.lastPage})}" th:text="尾页"></a>
+
+</center>
+</body>
+</html>

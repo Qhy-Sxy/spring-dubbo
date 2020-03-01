@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.ClassMapper">
+    <select id="findAll" resultType="ClassVo">
+       select classid,classname,begintime,endtime,gradename from class,grade where class.GradeID=grade.GradeID
+   </select>
+    <insert id="add" parameterType="ClassVo">
+         insert into class(ClassName,begintime,endtime,GradeID)
+         values(#{classname},#{begintime},#{endtime},#{gradeid})
+    </insert>
+    <delete id="delClass" parameterType="int">
+        delete from class where classid=#{classid}
+    </delete>
+    <select id="selectClass" parameterType="int" resultType="ClassDB">
+        select * from class where classid=#{classid}
+    </select>
+    <update id="updateClass" parameterType="ClassDB">
+        update class set classname=#{classname},begintime=#{begintime},endtime=#{endtime},gradeid=#{gradeid} where classid=#{classid}
+    </update>
+    <delete id="delall" parameterType="List">
+        delete from class where classid in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findClassId" parameterType="int" resultType="ClassVo">
+        select * from class where classid=#{id}
+    </select>
+</mapper>

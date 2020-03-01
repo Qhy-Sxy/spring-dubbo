@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/jquery-3.1.1.js}"></script>
+</head>
+<body>
+<center>
+    <form th:action="@{/upd_do}" th:method="post" th:object="${cla}" >
+        <input type="hidden" th:value="*{classid}" th:name="classid"/>
+        班级名称：<input th:name="classname" th:value="*{classname}"/><br>
+        开班日期：<input th:name="begintime" th:value="${#dates.format(cla.begintime,'yyyy-MM-dd hh:mm:ss')}"/><br>
+        毕业日期：<input th:name="endtime"  th:value="${#dates.format(cla.endtime,'yyyy-MM-dd hh:mm:ss')}"/><br>
+        年级：<select th:name="gradeid">
+        <option th:each="g:${gs2}" th:value="${g.gradeid}" th:text="${g.gradename}" th:selected="${g.gradeid==cla.gradeid}"></option>
+    </select><br>
+        <input type="submit" value="修改">
+    </form>
+</center>
+</body>
+</html>
